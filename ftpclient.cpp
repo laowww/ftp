@@ -6,7 +6,7 @@
 
 size_t writeCallback(void* contents, size_t size, size_t nmemb, QString* output)
 {
-    output->append(QString::fromLocal8Bit((char*)contents));
+    output->append(QString::fromLocal8Bit((char*)contents, size * nmemb));
     return size * nmemb;
 }
 
@@ -39,7 +39,7 @@ public:
 FtpClient::FtpClient()
     : m_pd(new FtpClientPrivate)
 {
-
+    setTimeOut(3);
 }
 
 FtpClient::~FtpClient()
@@ -50,6 +50,11 @@ FtpClient::~FtpClient()
 
 void FtpClient::fileList(const QString &url, const QString &username, const QString &password)
 {
+    if(url.isEmpty())
+    {
+        return;
+    }
+
     QString fileData;
 
     curl_easy_setopt(m_pd->pCurl, CURLOPT_URL, url.toStdString().c_str());
@@ -72,8 +77,14 @@ void FtpClient::fileList(const QString &url, const QString &username, const QStr
         qDebug() << "curl_easy_perform() failed: " << curl_easy_strerror(res);
     }
 
-    foreach(const QString &str, fileData.split("\r\n"))
+    foreach(const QString &str, fileData.trimmed().split("\r\n"))
     {
         qDebug()<< str.split("\t");
     }
+}
+
+void FtpClient::setTimeOut(int time)
+{
+    // 设置超时时间
+    curl_easy_setopt(m_pd->pCurl, CURLOPT_TIMEOUT, time);
 }

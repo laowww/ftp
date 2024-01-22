@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "ftpclient.struct.h"
+
 class FtpClientPrivate;
 class FtpClient
 {
@@ -11,7 +13,9 @@ public:
     ~FtpClient();
 
 public:
-    void fileList(const QString &url, const QString &username = NULL, const QString &password = NULL);
+    void fileList(QList<st_fileInfo> fileList, const QString &url, const QString &username = NULL, const QString &password = NULL);
+
+    void setTimeOut(int time);
 
 private:
     FtpClientPrivate *m_pd;

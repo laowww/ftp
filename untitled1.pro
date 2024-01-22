@@ -14,7 +14,9 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    FtpClient.const.h \
     ftpclient.h \
+    ftpclient.struct.h \
     mainwindow.h
 
 FORMS += \
