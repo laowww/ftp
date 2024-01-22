@@ -1,0 +1,4 @@
+INCLUDEPATH += $${PWD}/include/curl
+
+#DEFINES += CURL_STATICLIB
+LIBS += -L$${PWD}/lib -llibcurl
