@@ -3,7 +3,7 @@
 
 #include <QString>
 
-const QString DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
-const QString DATETIME_CURLFORMAT = "MM-dd-yy hh:mmsp";
+const QString DATETIME_FORMAT = "yyyy/MM/dd hh:mm";
+const QString DATETIME_CURLFORMAT = "MM-dd-yy  hh:mmAP";
 
 #endif // FTPCLIENT_CONST_H
