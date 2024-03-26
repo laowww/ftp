@@ -10,14 +10,14 @@ MainWindow::MainWindow(QWidget *parent)
     , m_pFtp(NULL)
 {
     ui->setupUi(this);
-    setWindowTitle(QString::fromLocal8Bit("Ftp客户端"));
+    setWindowTitle("Ftp客户端" );
 
     ui->treeWidget->setRootIsDecorated(false);
     ui->treeWidget->header()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->treeWidget->setHeaderLabels(QStringList()<< QString::fromLocal8Bit("名称")<< QString::fromLocal8Bit("修改日期")<< QString::fromLocal8Bit("大小"));
+    ui->treeWidget->setHeaderLabels(QStringList()<< "名称" << "修改日期" << "大小" );
 
-    ui->le_ip->setText(QString::fromLocal8Bit("ftp://192.168.30.108"));
-    ui->le_port->setText(QString::fromLocal8Bit("21"));
+    ui->le_ip->setText("ftp://192.168.30.103" );
+    ui->le_port->setText("21" );
     connect(ui->btn_login, SIGNAL(clicked()), this, SLOT(slot_connectFtp()));
 }
 
@@ -60,6 +60,6 @@ void MainWindow::slot_connectFtp()
         ui->treeWidget->addTopLevelItem(pItem);
     }
 
-    m_pFtp->download(QString::fromLocal8Bit("ftp://192.168.30.108:21/安装包.exe"), QApplication::applicationDirPath()+QString::fromLocal8Bit("/安装包.exe"));
+    m_pFtp->download("ftp://192.168.30.103:21/1.exe" , QApplication::applicationDirPath()+"/安装包.exe" );
 }
 
