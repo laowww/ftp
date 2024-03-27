@@ -16,11 +16,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
-    void updateProgress(qint64 dltotal, qint64 dlnow, qint64 ultotal, qint64 ulnow);
-
 private slots:
     void slot_connectFtp();
+
+    void slot_download();
+
+    void slot_treeMenu(const QPoint &pos);
 
 private:
     Ui::MainWindow *ui;
