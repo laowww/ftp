@@ -9,18 +9,24 @@ DESTDIR = ./bin
 include(./curl/curl.prf)
 
 SOURCES += \
+    downloadfile.cpp \
     ftpclient.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    progress.cpp
 
 HEADERS += \
     FtpClient.const.h \
+    downloadfile.h \
     ftpclient.h \
     ftpclient.struct.h \
-    mainwindow.h
+    mainwindow.h \
+    progress.h
 
 FORMS += \
-    mainwindow.ui
+    downloadfile.ui \
+    mainwindow.ui \
+    progress.ui
 
 CONFIG(debug, debug|release){
     BUILD_CONFIG = ./debug

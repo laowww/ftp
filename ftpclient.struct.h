@@ -8,14 +8,14 @@ struct st_fileInfo
 {
     QString name;
     QString date;
-    QString size;
+    qint64 size;
     bool bDir;
 
     st_fileInfo()
     {
         name = "";
         date = "";
-        size = "";
+        size = 0;
         bDir = false;
     }
 };
