@@ -51,7 +51,7 @@ void MainWindow::connectFtp(const QString &path)
         QTreeWidgetItem *pItem = new QTreeWidgetItem;
         pItem->setText(0, info.name);
         pItem->setText(1, info.date);
-        pItem->setText(2, QString::number(qCeil(info.size / 1024.0)) + "KB");
+        pItem->setText(2, info.bDir ? "" : QString::number(qCeil(info.size / 1024.0)) + "KB");
         pItem->setData(0, Qt::UserRole, info.bDir);
         pItem->setData(0, Qt::UserRole + 1, info.size);
 
@@ -122,6 +122,10 @@ void MainWindow::slot_openFolder(QTreeWidgetItem *pItem, int column)
     if(pItem->data(0, Qt::UserRole).toBool())
     {
         slot_openFolder();
+    }
+    else
+    {
+        slot_download();
     }
 }
 

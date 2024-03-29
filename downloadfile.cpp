@@ -6,7 +6,6 @@
 DownloadFile::DownloadFile(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::DownloadFile)
-    , m_pClient(new FtpClient)
     , m_pTimer(new QTimer(this))
 {
     ui->setupUi(this);
@@ -22,34 +21,29 @@ DownloadFile::~DownloadFile()
 void DownloadFile::download(const QString &remote, const QString &local)
 {
     Progress *pWdt = new Progress(this);
-    pWdt->setName(local.right(local.size() - local.lastIndexOf("/") - 1));
 
     m_progressList.append(pWdt);
     ui->verticalLayout->insertWidget(0, pWdt);
 
-    QtConcurrent::run(this, &DownloadFile::downloadThread, remote, local);
-}
-
-int DownloadFile::progressCallback(void *obj, double dltotal, double dlnow, double ultotal, double ulnow)
-{
-    Progress *progress = static_cast<Progress *>(obj);
-    if(progress)
-    {
-        progress->setDownLoad(dltotal, dlnow);
-    }
-
-    return 0;
-}
-
-void DownloadFile::downloadThread(const QString &remote, const QString &local)
-{
-    m_pClient->download(remote, local, m_progressList.last(), &DownloadFile::progressCallback);
+    pWdt->downLoad(remote, local);
 }
 
 void DownloadFile::slot_updateProgress()
 {
-    foreach(Progress *obj, m_progressList)
+    QList<Progress *>::iterator iter(m_progressList.begin());
+    while(iter != m_progressList.end())
     {
-        obj->updateProgress();
+        if((*iter)->isFinished())
+        {
+            m_progressList.erase(iter);
+            ui->verticalLayout->removeWidget(*iter);
+            (*iter)->deleteLater();
+        }
+        else
+        {
+            (*iter)->updateProgress();
+        }
+
+        iter++;
     }
 }

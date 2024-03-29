@@ -7,13 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>584</width>
-    <height>74</height>
+    <height>78</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <item row="2" column="1">
+    <widget class="QLabel" name="lb_speed">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="lb_progress">
      <property name="text">
@@ -28,20 +41,23 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="lb_speed">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0" colspan="2">
     <widget class="QProgressBar" name="progressBar">
      <property name="value">
       <number>24</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="btn_pause">
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>暂停</string>
      </property>
     </widget>
    </item>

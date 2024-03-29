@@ -6,7 +6,9 @@
 #include "ftpclient.struct.h"
 
 typedef int (*progressCallback)(void *obj, double dltotal, double dlnow, double ultotal, double ulnow);
+typedef size_t (*writeCallback)(char* contents, size_t size, size_t nmemb, void *file);
 
+class Progress;
 class FtpClientPrivate;
 class FtpClient
 {
@@ -17,7 +19,7 @@ public:
 public:
     bool fileList(QList<st_fileInfo> &fileList, const QString &url);
 
-    bool download(const QString &url, const QString &localPath, void *obj = NULL, progressCallback progressCallback = NULL);
+    bool download(const QString &url, const QString &localPath, Progress *obj, writeCallback writeCallback, progressCallback progressCallback);
 
     void setTimeOut(int timeout);
 

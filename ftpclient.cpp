@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include <QDataStream>
 
+#include "progress.h"
 #include "ftpclient.h"
 #include "FtpClient.const.h"
 
@@ -136,7 +137,7 @@ bool FtpClient::fileList(QList<st_fileInfo> &fileList, const QString &url)
     return false;
 }
 
-bool FtpClient::download(const QString &url, const QString &localPath, void *obj, progressCallback progressCallback)
+bool FtpClient::download(const QString &url, const QString &localPath, Progress *obj, writeCallback writeCallback, progressCallback progressCallback)
 {
     if(url.isEmpty())
     {
@@ -146,12 +147,22 @@ bool FtpClient::download(const QString &url, const QString &localPath, void *obj
     CURL *pCurl = curl_easy_init();
     if(pCurl)
     {
-        QFile file(localPath);
-        if(file.open(QIODevice::WriteOnly))
+        obj->m_file.setFileName(localPath);
+        if(obj->m_file.exists())
+        {
+            obj->m_file.open(QIODevice::Append);
+            curl_easy_setopt(pCurl, CURLOPT_RESUME_FROM_LARGE, obj->m_file.size());
+        }
+        else
+        {
+            obj->m_file.open(QIODevice::WriteOnly);
+        }
+
+        if(obj->m_file.isOpen())
         {
             curl_easy_setopt(pCurl, CURLOPT_URL, encodeUrl(url).data());
-            curl_easy_setopt(pCurl, CURLOPT_WRITEFUNCTION, writeFileCallback);
-            curl_easy_setopt(pCurl, CURLOPT_WRITEDATA, &file);
+            curl_easy_setopt(pCurl, CURLOPT_WRITEFUNCTION, writeCallback);
+            curl_easy_setopt(pCurl, CURLOPT_WRITEDATA, obj);
 
             curl_easy_setopt(pCurl, CURLOPT_NOPROGRESS, 0L);
             curl_easy_setopt(pCurl, CURLOPT_PROGRESSFUNCTION, progressCallback);
@@ -159,9 +170,14 @@ bool FtpClient::download(const QString &url, const QString &localPath, void *obj
             curl_easy_setopt(pCurl, CURLOPT_NOSIGNAL,1L);
 
             curl_multi_add_handle(m_pd->pCurlMulti, pCurl);
-
             m_pd->perform(pCurl);
-            file.close();
+
+            obj->m_file.close();
+        }
+        else
+        {
+            curl_easy_cleanup(pCurl);
+            qDebug()<< "Failed to open download file";
         }
     }
     else
